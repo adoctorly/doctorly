@@ -143,7 +143,7 @@ function App() {
         const logsRes = await axios.get('/api/profile/practice-logs', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setPracticeLogs(logsRes.data);
+        setPracticeLogs(Array.isArray(logsRes.data) ? logsRes.data : []);
       } catch (err) {
         setProfile(null);
         setPracticeLogs([]);
@@ -160,7 +160,7 @@ function App() {
         const logsRes = await axios.get('/api/profile/practice-logs', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setPracticeLogs(logsRes.data);
+        setPracticeLogs(Array.isArray(logsRes.data) ? logsRes.data : []);
       } catch (err) {
         setPracticeLogs([]);
       }
@@ -180,10 +180,10 @@ function App() {
 
   // Filter practiceLogs by date range
   const filteredPracticeLogs = React.useMemo(() => {
-    if (!practiceLogs) return [];
+    const logs = Array.isArray(practiceLogs) ? practiceLogs : [];
     const start = dateRange.start ? new Date(dateRange.start) : null;
     const end = dateRange.end ? new Date(dateRange.end) : null;
-    return practiceLogs.filter(log => {
+    return logs.filter(log => {
       const logDate = log.date ? new Date(log.date) : null;
       if (!logDate) return false;
       if (start && logDate < start) return false;
