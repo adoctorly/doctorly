@@ -54,6 +54,21 @@ const UserSchema = new mongoose.Schema({
     leadership: [{ organization: String, startDate: Date, endDate: Date, hours: Number }],
     community: [{ organization: String, startDate: Date, endDate: Date, hours: Number }]
   },
+  extracurricularsV2: [{
+    type: { type: String, enum: ['clinical', 'research', 'leadership', 'community'], required: true },
+    organization: { type: String, required: true },
+    role: { type: String },
+    startDate: { type: Date },
+    endDate: { type: Date },
+    hours: { type: Number, required: true },
+    description: { type: String }
+  }],
+  ecsTargets: {
+    clinical: { type: Number, default: 100 },
+    research: { type: Number, default: 100 },
+    leadership: { type: Number, default: 100 },
+    community: { type: Number, default: 100 }
+  },
   mcatAttempts: [MCATAttemptSchema],
   applicationCycles: [ApplicationCycleSchema],
   profileComplete: { type: Boolean, default: false },
