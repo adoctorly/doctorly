@@ -10,7 +10,7 @@ import PracticeLogsHistory, { PracticeLogsModalTable } from './components/Practi
 import ProgressDashboard from './components/ProgressDashboard';
 import PracticeTrendsChart from './components/PracticeTrendsChart';
 import { auth } from './firebase';
-import axios from 'axios';
+import api from './api';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -114,7 +114,7 @@ function App() {
   const confirmDeleteAccount = async () => {
     try {
       const token = await auth.currentUser.getIdToken();
-      await axios.delete('/api/profile', { headers: { Authorization: `Bearer ${token}` } });
+      await api.delete('/api/profile', { headers: { Authorization: `Bearer ${token}` } });
       await auth.signOut();
       setUser(null);
       setProfile(null);
@@ -135,12 +135,12 @@ function App() {
       setLoadingProfile(true);
       try {
         const token = await auth.currentUser.getIdToken();
-        const res = await axios.get('/api/profile', {
+        const res = await api.get('/api/profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProfile(res.data);
         // Fetch practice logs
-        const logsRes = await axios.get('/api/profile/practice-logs', {
+        const logsRes = await api.get('/api/profile/practice-logs', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPracticeLogs(Array.isArray(logsRes.data) ? logsRes.data : []);
@@ -157,7 +157,7 @@ function App() {
     if (user && auth.currentUser) {
       try {
         const token = await auth.currentUser.getIdToken();
-        const logsRes = await axios.get('/api/profile/practice-logs', {
+        const logsRes = await api.get('/api/profile/practice-logs', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPracticeLogs(Array.isArray(logsRes.data) ? logsRes.data : []);
@@ -444,7 +444,7 @@ function App() {
                 try {
                   const token = await auth.currentUser.getIdToken();
                   const emails = shareEmails.split(',').map(e => e.trim()).filter(e => e);
-                  await axios.post('/api/profile/share', { emails }, { headers: { Authorization: `Bearer ${token}` } });
+                  await api.post('/api/profile/share', { emails }, { headers: { Authorization: `Bearer ${token}` } });
                   setShareLink(window.location.origin + '/shared/' + user.uid);
                   setShareSnackbar('Share link ready!');
                 } catch (err) {
