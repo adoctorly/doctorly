@@ -218,7 +218,7 @@ const ProfileSetup = ({ user, onProfileComplete, initialData }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Box display="flex" gap={2} mb={2}>
-                <TextField name="name" label="Name" value={form.name} InputProps={{ readOnly: true }} fullWidth required />
+                <TextField name="name" label="Name" value={form.name} InputProps={{ readOnly: !!form.name }} onChange={handleChange} fullWidth required />
                 <TextField name="email" label="Email" value={form.email} InputProps={{ readOnly: true }} fullWidth required />
               </Box>
               <Box display="flex" gap={2} mb={2}>
