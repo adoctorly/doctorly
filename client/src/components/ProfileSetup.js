@@ -14,6 +14,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const emptyDegree = { degree: '', school: '' };
 const emptyExtracurricular = { organization: '', startDate: '', endDate: '', hours: '' };
@@ -43,6 +44,7 @@ const ProfileSetup = ({ user, onProfileComplete, initialData }) => {
   const [form, setForm] = useState(defaultForm);
   const [expanded, setExpanded] = useState('personal');
   const [saving, setSaving] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (initialData) {
@@ -187,6 +189,13 @@ const ProfileSetup = ({ user, onProfileComplete, initialData }) => {
     });
     setSaving(false);
     if (onProfileComplete) onProfileComplete();
+    window.location.reload();
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    if (onProfileComplete) onProfileComplete();
+    window.location.reload();
   };
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -304,7 +313,7 @@ const ProfileSetup = ({ user, onProfileComplete, initialData }) => {
               {saving ? 'Saving...' : 'Save Profile'}
             </Button>
             {initialData && (
-              <Button variant="outlined" color="secondary" size="large" sx={{ px: 5, py: 1.5, fontSize: 18 }} onClick={e => { e.preventDefault(); if (onProfileComplete) onProfileComplete(); }}>
+              <Button variant="outlined" color="secondary" size="large" sx={{ px: 5, py: 1.5, fontSize: 18 }} onClick={handleCancel}>
                 Cancel
               </Button>
             )}
