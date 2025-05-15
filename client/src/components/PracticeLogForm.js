@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -98,7 +98,7 @@ const PracticeLogForm = ({ user, onAdded }) => {
     setLoading(true);
     try {
       const token = await user.getIdToken();
-      await axios.post('/api/profile/practice-log', { ...form, date: parsedDate.toISOString() }, {
+      await api.post('/api/profile/practice-log', { ...form, date: parsedDate.toISOString() }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setForm({ date: '', section: 'chemPhys', subtopic: '', platform: 'UWorld', rawScore: '', totalQuestions: '' });

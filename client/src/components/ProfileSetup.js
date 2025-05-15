@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -182,7 +182,7 @@ const ProfileSetup = ({ user, onProfileComplete, initialData }) => {
         });
       });
     }
-    await axios.post('/api/profile', form, {
+    await api.post('/api/profile', form, {
       headers: { Authorization: `Bearer ${token}` }
     });
     setSaving(false);

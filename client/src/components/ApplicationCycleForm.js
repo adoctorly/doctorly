@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -54,7 +54,7 @@ const ApplicationCycleForm = ({ user, onAdded, cycles = [] }) => {
     const token = await user.getIdToken();
     // Only include non-empty schools
     const outcomes = form.schools.filter(s => s.school.trim()).map(s => ({ school: s.school.trim(), status: s.outcome }));
-    await axios.post('/api/profile/application-cycle', {
+    await api.post('/api/profile/application-cycle', {
       year: form.year,
       schoolsApplied: outcomes.map(o => o.school),
       outcomes

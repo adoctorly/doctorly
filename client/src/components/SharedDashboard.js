@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -70,7 +70,7 @@ const SharedDashboard = () => {
         const user = auth.currentUser;
         if (!user) throw new Error('You must be signed in with Google.');
         const token = await user.getIdToken();
-        const res = await axios.get(`/api/profile/${uid}/shared`, {
+        const res = await api.get(`/api/profile/${uid}/shared`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!res.data.allowed) {
@@ -80,11 +80,11 @@ const SharedDashboard = () => {
         }
         setAllowed(true);
         // Fetch profile and logs for this uid
-        const profileRes = await axios.get(`/api/profile/${uid}/public-profile`, {
+        const profileRes = await api.get(`/api/profile/${uid}/public-profile`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProfile(profileRes.data);
-        const logsRes = await axios.get(`/api/profile/${uid}/public-practice-logs`, {
+        const logsRes = await api.get(`/api/profile/${uid}/public-practice-logs`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPracticeLogs(logsRes.data);

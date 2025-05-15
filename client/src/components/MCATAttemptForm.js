@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -36,7 +36,7 @@ const MCATAttemptForm = ({ user, onAdded, attempts = [] }) => {
     }
     const token = await user.getIdToken();
     const { prepDetails, ...formToSend } = form;
-    await axios.post('/api/profile/mcat-attempt', { ...formToSend, date: parsedDate.toISOString() }, {
+    await api.post('/api/profile/mcat-attempt', { ...formToSend, date: parsedDate.toISOString() }, {
       headers: { Authorization: `Bearer ${token}` }
     });
     setForm({ date: '', scores: { chemPhys: '', cars: '', bioBiochem: '', psychSoc: '', total: '' } });
