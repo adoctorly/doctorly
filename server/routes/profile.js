@@ -146,4 +146,52 @@ router.get('/:uid/public-practice-logs', auth, async (req, res) => {
   res.json(user.practiceLogs || []);
 });
 
+// ECS (Extracurriculars/Clinical/Service) V2 Endpoints
+router.get('/extracurricularsV2', auth, async (req, res) => {
+  const user = await User.findOne({ uid: req.user.uid });
+  if (!user) return res.status(404).json({ error: 'Profile not found' });
+  res.json(user.extracurricularsV2 || []);
+});
+
+router.post('/extracurricularsV2', auth, async (req, res) => {
+  const user = await User.findOne({ uid: req.user.uid });
+  if (!user) return res.status(404).json({ error: 'Profile not found' });
+  user.extracurricularsV2.push(req.body);
+  await user.save();
+  res.status(201).json(user.extracurricularsV2[user.extracurricularsV2.length - 1]);
+});
+
+router.put('/extracurricularsV2/:id', auth, async (req, res) => {
+  const user = await User.findOne({ uid: req.user.uid });
+  if (!user) return res.status(404).json({ error: 'Profile not found' });
+  const ex = user.extracurricularsV2.id(req.params.id);
+  if (!ex) return res.status(404).json({ message: 'Not found' });
+  Object.assign(ex, req.body);
+  await user.save();
+  res.json(ex);
+});
+
+router.delete('/extracurricularsV2/:id', auth, async (req, res) => {
+  const user = await User.findOne({ uid: req.user.uid });
+  if (!user) return res.status(404).json({ error: 'Profile not found' });
+  user.extracurricularsV2.id(req.params.id).remove();
+  await user.save();
+  res.status(204).end();
+});
+
+// ECS Targets Endpoints
+router.get('/ecs-targets', auth, async (req, res) => {
+  const user = await User.findOne({ uid: req.user.uid });
+  if (!user) return res.status(404).json({ error: 'Profile not found' });
+  res.json(user.ecsTargets || {});
+});
+
+router.put('/ecs-targets', auth, async (req, res) => {
+  const user = await User.findOne({ uid: req.user.uid });
+  if (!user) return res.status(404).json({ error: 'Profile not found' });
+  user.ecsTargets = { ...user.ecsTargets, ...req.body };
+  await user.save();
+  res.json(user.ecsTargets);
+});
+
 module.exports = router; 

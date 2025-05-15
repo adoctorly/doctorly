@@ -43,7 +43,7 @@ import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import SharedDashboard from './components/SharedDashboard';
 import PracticeSummary from './components/PracticeSummary';
 import dayjs from 'dayjs';
@@ -56,6 +56,7 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import PieChartIcon from '@mui/icons-material/PieChart';
+import ECSDashboard from './components/ECSDashboard';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -74,6 +75,7 @@ function App() {
   const [shareLink, setShareLink] = useState('');
   const [shareSnackbar, setShareSnackbar] = useState('');
   const [dateRange, setDateRange] = useState({ start: '', end: '' });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
@@ -241,6 +243,11 @@ function App() {
         <Typography variant="h5" align="center" color="textSecondary" gutterBottom sx={{ mb: 5 }}>
           Hello, {profile.name || profile.email}
         </Typography>
+        <Box display="flex" justifyContent="center" mb={4}>
+          <Button variant="contained" color="secondary" onClick={() => navigate('/ecs')}>
+            Track Extracurriculars & Service Hours
+          </Button>
+        </Box>
         {/* Global Date Range Filter (now below greeting) */}
         <Box display="flex" flexWrap="wrap" alignItems="center" gap={2} mb={4} justifyContent="center">
           <TextField
@@ -471,6 +478,7 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/ecs" element={<ECSDashboard profile={profile} />} />
       <Route path="/shared/:uid" element={<SharedDashboard />} />
       <Route path="/*" element={mainAppElement} />
     </Routes>
